@@ -18,48 +18,40 @@ title = ""
 content = "\n"
 
 # 擷取網站
-def fetch(url, encode):
-    response = requests.get(url)
-    response.encoding = encode
-    #response = requests.get(url, cookies={'over18': '1'})  # 一直向 server 回答滿 18 歲了 !
-    return response
+def fetchHTML(url, encode):
+  response = requests.get(url)
+  response.encoding = encode
+  #response = requests.get(url, cookies={'over18': '1'})  # 一直向 server 回答滿 18 歲了 !
+  # html.parser
+  # Batteries included, Decent speed (不錯的速度), Lenient (寬容)
+  soup = BeautifulSoup(response.text, "html.parser")
+  return soup
 
 # 被擷取的網站
 ## 中華民國圍棋協會
-url = 'http://www.weiqi.org.tw/class_list.asp'
+url_go_news = 'http://www.weiqi.org.tw/class_list.asp' #最新動態
+url_go_contest= 'http://www.weiqi.org.tw/f_m-inc.asp' # 比賽成績 + 比賽資訊
 
 
-resp = fetch(url, encode='big5-hkscs')
 
 
-# html.parser
-# Batteries included, Decent speed (不錯的速度), Lenient (寬容)
-soup = BeautifulSoup(resp.text, "lxml")
+def parseGoContest(soup):
+  
+  # all topics
+  topics = soup.select(".base01")
+  return topics
 
-# all topics
-topics = soup.select("tr")
-print(topics[0].find('a').text)
+def parseGoNews(soup):
+    # all topics
+    topics = soup.select("tr")
+    # the first and the second important messages
+    print(topics[1].text)  
+    print(topics[2].text)
 
-'''
-# fetch needed href from index
-for topic in topics:
-    a_topic = topic.find("a")
-    datetime_object = datetime.strptime(topic.find("div", class_="date").text.strip(), '%m/%d')
-
-    # if the topic is not empty
-    if a_topic and topic.find("span"):
-
-        # push must bigger than push_number and catch today
-        push = int(topic.find("span").text)
-        if push < push_numbers:
-            continue
-        elif dateime_now.strftime("%m/%d") != datetime_object.strftime("%m/%d"):
-            continue
-
-        title = title + a_topic.text +'\n'
-        # catch href (也可能不需要了)
-
-        a_topic_href = a_topic.get("href")
-        article_href.append("https://www.ptt.cc"+ a_topic_href)'''
+if __name__ == "__main__":
+  resp_GoNews = fetchHTML(url_go_news, encode='big5-hkscs')
+  resp_GoContest = fetchHTML(url_go_contest, encode='big5-hkscs')
+  parseGoNews(resp_GoNews)
+  parseGoContest(resp_GoContest)
 
         
