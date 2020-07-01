@@ -1,4 +1,4 @@
-#!/Users/chengfengshi/Documents/Devprojects/Broadgame_plateform/Boardgame_integrated_Server/env/bin/python
+#!/Users/chengfengshi/Documents/Devprojects/Boardgame_plateform/Boardgame_integrated_Server/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
