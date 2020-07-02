@@ -31,8 +31,8 @@ application.add_url_rule('/<username>', 'hello', (lambda username:
 # call crawler
 @application.route('/e/e')
 def call_crawler():
-    run_result()
-    return "eee"
+    return str(list(run_result()))
+    
 
 
 # run the app.

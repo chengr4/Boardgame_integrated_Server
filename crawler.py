@@ -43,6 +43,8 @@ def parseGoProInfo(soup):
   for topic in topics:
     print(topic.find('span').text.strip() + "\t"
     + topic.find('a').text.strip())
+    yield (topic.find('span').text.strip() + "\t"
+    + topic.find('a').text.strip())
 
 # not finish 預訂回傳整個網址
 def parseGoContest(soup):
@@ -53,15 +55,15 @@ def parseGoContest(soup):
 
 # 分析中華圍棋協會
 def parseGoNews(soup):
-    # all topics
-    topics = soup.select("tr")
-    # the first and the second important messages
-    print(topics[1].text)  
-    print(topics[2].text)
+  # all topics
+  topics = soup.select("tr")
+  # the first and the second important messages
+  print(topics[1].text)  
+  print(topics[2].text)
 
 def run_result():
   resp_GoProInfo = fetchHTML(url_go_proinfo)
-  parseGoProInfo(resp_GoProInfo)
+  return parseGoProInfo(resp_GoProInfo)
 
 if __name__ == "__main__":
   resp_GoNews = fetchHTML(url_go_news, encode='big5-hkscs')
