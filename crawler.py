@@ -6,7 +6,14 @@ from datetime import datetime
 dateime_now = datetime.now()
 
 # main list to crawl
-main_url = []
+main_url = {
+  # 中華民國圍棋協會
+  "go_news": "http://www.weiqi.org.tw/class_list.asp", #最新動態
+  "url_go_contest": "http://www.weiqi.org.tw/f_m-inc.asp", # 比賽成績 + 比賽資訊
+  # 海峰棋院
+  "url_go_proinfo": "https://www.haifong.org/" # 比賽成績 + 比賽資訊
+}
+
 article_href = []
 
 # push numbers setting
@@ -21,7 +28,6 @@ content = "\n"
 def fetchHTML(url, encode='utf-8'):
   response = requests.get(url)
   response.encoding = encode
-  #response = requests.get(url, cookies={'over18': '1'})  # 一直向 server 回答滿 18 歲了 !
   # html.parser
   # Batteries included, Decent speed (不錯的速度), Lenient (寬容)
   soup = BeautifulSoup(response.text, "html.parser")
@@ -43,8 +49,8 @@ def parseGoProInfo(soup):
   for topic in topics:
     print(topic.find('span').text.strip() + "\t"
     + topic.find('a').text.strip())
-    yield (topic.find('span').text.strip() + "\t"
-    + topic.find('a').text.strip())
+    #yield (topic.find('span').text.strip() + "\t"
+    #+ topic.find('a').text.strip())
 
 # not finish 預訂回傳整個網址
 def parseGoContest(soup):
@@ -68,7 +74,7 @@ def run_result():
 if __name__ == "__main__":
   resp_GoNews = fetchHTML(url_go_news, encode='big5-hkscs')
   resp_GoContest = fetchHTML(url_go_contest, encode='big5-hkscs')
-  resp_GoProInfo = fetchHTML(url_go_proinfo)
+  resp_GoProInfo = fetchHTML(main_url["url_go_proinfo"])
   #parseGoNews(resp_GoNews)
   parseGoProInfo(resp_GoProInfo)
   # parseGoContest(resp_GoContest) -> 改直接傳整個網址
