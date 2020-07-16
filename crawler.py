@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import json
 
 # today's date
 dateime_now = datetime.now()
@@ -9,20 +10,13 @@ dateime_now = datetime.now()
 main_url = {
   # 中華民國圍棋協會
   "go_news": "http://www.weiqi.org.tw/class_list.asp", #最新動態
-  "url_go_contest": "http://www.weiqi.org.tw/f_m-inc.asp", # 比賽成績 + 比賽資訊
+  "go_contest": "http://www.weiqi.org.tw/f_m-inc.asp", # 比賽成績 + 比賽資訊
   # 海峰棋院
-  "url_go_proinfo": "https://www.haifong.org/" # 比賽成績 + 比賽資訊
+  "go_proinfo": "https://www.haifong.org/" # 比賽成績 + 比賽資訊
 }
-
-article_href = []
 
 # push numbers setting
 push_numbers = 10
-
-# title adn content
-title = ""
-## 還沒決定用途，之後可能刪除或更新
-content = "\n"
 
 # 擷取網站
 def fetchHTML(url, encode='utf-8'):
@@ -33,12 +27,7 @@ def fetchHTML(url, encode='utf-8'):
   soup = BeautifulSoup(response.text, "html.parser")
   return soup
 
-# 被擷取的網站
-## 中華民國圍棋協會
-url_go_news = 'http://www.weiqi.org.tw/class_list.asp' #最新動態
-url_go_contest= 'http://www.weiqi.org.tw/f_m-inc.asp' # 比賽成績 + 比賽資訊
-# 海峰棋院
-url_go_proinfo= 'https://www.haifong.org/' # 比賽成績 + 比賽資訊
+
 
 
 
@@ -46,11 +35,10 @@ url_go_proinfo= 'https://www.haifong.org/' # 比賽成績 + 比賽資訊
 def parseGoProInfo(soup):
   # all topics
   topics = soup.select("div#index-news li")
+  data = {}
   for topic in topics:
-    print(topic.find('span').text.strip() + "\t"
-    + topic.find('a').text.strip())
-    #yield (topic.find('span').text.strip() + "\t"
-    #+ topic.find('a').text.strip())
+    data[topic.find('span').text.strip()]= topic.find('a').text.strip()
+  return data
 
 # not finish 預訂回傳整個網址
 def parseGoContest(soup):
@@ -67,16 +55,34 @@ def parseGoNews(soup):
   print(topics[1].text)  
   print(topics[2].text)
 
+# convert generator to list
+'''class StreamArray(list):
+  def __iter__(self):
+    resp_GoProInfo = fetchHTML(main_url["go_proinfo"])
+    return parseGoProInfo(resp_GoProInfo)
+  
+  def __len__(self):
+    return 1'''
+
 def run_result():
-  resp_GoProInfo = fetchHTML(url_go_proinfo)
-  return parseGoProInfo(resp_GoProInfo)
+  #info_list = StreamArray()
+  #result = json.dumps(info_list)
+  resp_GoProInfo = fetchHTML(main_url["go_proinfo"])
+  result = parseGoProInfo(resp_GoProInfo)
+
+  
+  return type(result)
 
 if __name__ == "__main__":
-  resp_GoNews = fetchHTML(url_go_news, encode='big5-hkscs')
-  resp_GoContest = fetchHTML(url_go_contest, encode='big5-hkscs')
-  resp_GoProInfo = fetchHTML(main_url["url_go_proinfo"])
+  #resp_GoNews = fetchHTML(main_url['go_news'], encode='big5-hkscs')
   #parseGoNews(resp_GoNews)
-  parseGoProInfo(resp_GoProInfo)
+
+  #resp_GoContest = fetchHTML(main_url['go_contest'], encode='big5-hkscs')
   # parseGoContest(resp_GoContest) -> 改直接傳整個網址
+
+  print(run_result())
+  
+  
+  
 
         
