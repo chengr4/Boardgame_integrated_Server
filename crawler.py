@@ -36,14 +36,17 @@ def parseGoProInfo(soup):
   # all topics
   topics = soup.select("div#index-news li")
   data = {'GoProInfo':[]}
-  
+  index = 1
   # 最新棋訊
   for topic in topics:
     # each row is a dict
     temp_dic = {}
-    temp_dic[topic.find('span').text.strip()]= topic.find('h3', class_='entry-title').find('a').text.strip()
+    temp_dic['id'] = str(index)
+    temp_dic['title'] = '[Go]'+topic.find('span').text.strip()
+    temp_dic['source'] = topic.find('h3', class_='entry-title').find('a').text.strip()
     # append to data dict (key:GoProInfo, value:array)
     data['GoProInfo'].append(temp_dic)
+    index = index + 1
 
   # convert to json format
   data_json = json.dumps(data, ensure_ascii=False)
