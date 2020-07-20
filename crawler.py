@@ -44,6 +44,7 @@ def parseGoProInfo(soup):
     temp_dic['id'] = str(index)
     temp_dic['title'] = '[Go]'+topic.find('span').text.strip()
     temp_dic['source'] = topic.find('h3', class_='entry-title').find('a').text.strip()
+    temp_dic['href'] = topic.find('h3', class_='entry-title').find('a').get('href')
     # append to data dict (key:GoProInfo, value:array)
     data['GoProInfo'].append(temp_dic)
     index = index + 1
