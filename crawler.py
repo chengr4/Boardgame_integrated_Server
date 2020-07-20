@@ -79,7 +79,6 @@ def run_result():
   #result = json.dumps(info_list)
   resp_GoProInfo = fetchHTML(main_url["go_proinfo"])
   result = parseGoProInfo(resp_GoProInfo)
-
   
   return result
 
