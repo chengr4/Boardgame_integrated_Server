@@ -35,10 +35,19 @@ def fetchHTML(url, encode='utf-8'):
 def parseGoProInfo(soup):
   # all topics
   topics = soup.select("div#index-news li")
-  data = {}
+  data = {'GoProInfo':[]}
+  
+  # 最新棋訊
   for topic in topics:
-    data[topic.find('span').text.strip()]= topic.find('a').text.strip()
-  return data
+    # each row is a dict
+    temp_dic = {}
+    temp_dic[topic.find('span').text.strip()]= topic.find('h3', class_='entry-title').find('a').text.strip()
+    # append to data dict (key:GoProInfo, value:array)
+    data['GoProInfo'].append(temp_dic)
+
+  # convert to json format
+  data_json = json.dumps(data, ensure_ascii=False)
+  return data_json
 
 # not finish 預訂回傳整個網址
 def parseGoContest(soup):
@@ -64,6 +73,7 @@ def parseGoNews(soup):
   def __len__(self):
     return 1'''
 
+# run result of what I crawl
 def run_result():
   #info_list = StreamArray()
   #result = json.dumps(info_list)
@@ -71,7 +81,7 @@ def run_result():
   result = parseGoProInfo(resp_GoProInfo)
 
   
-  return type(result)
+  return result
 
 if __name__ == "__main__":
   #resp_GoNews = fetchHTML(main_url['go_news'], encode='big5-hkscs')
