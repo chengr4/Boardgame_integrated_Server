@@ -2,25 +2,16 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-class GoCrawler():
-
+class ChineseChessCrawler():
   # with encode='utf-8'
-  go_url_utf8 = {
+  chinese_chess_url_utf8 = {
     # 海峰棋院
-    "go_proinfo": "https://www.haifong.org/" # 圍棋職業資訊
+    "chinese_chess_news": "http://www.cccs.org.tw/front/bin/home.phtml" # 象棋最新消息
   }
-
-  # with encode='big5-hkscs'
-  go_url_big5 = {
-    # 中華民國圍棋協會
-    "go_news": "http://www.weiqi.org.tw/class_list.asp", # 圍棋最新動態
-    "go_contest": "http://www.weiqi.org.tw/f_m-inc.asp", # 圍棋比賽成績 + 比賽資訊
-  }
-  
 
   # 擷取網站 + response html format
   def fetchHTML(self):
-    url = self.go_url_utf8['go_proinfo']
+    url = self.chinese_chess_url_utf8['chinese_chess_news']
     # 考慮做 loop
     response = requests.get(url)
     response.encoding = 'utf-8'
@@ -29,9 +20,8 @@ class GoCrawler():
     soup = BeautifulSoup(response.text, "html.parser")
     return soup
 
-
-  # 分析海峰棋院訊息
-  def parseGoProInfo(self, soup):
+  # 分析中華民國象棋文化協會訊息
+  '''def parseGoProInfo(self, soup):
     # all topics
     topics = soup.select("div#index-news li")
     data = {'GoProInfo':[]}
@@ -50,4 +40,4 @@ class GoCrawler():
 
     # convert to json format
     data_json = json.dumps(data, ensure_ascii=False)
-    return data_json
+    return data_json'''
