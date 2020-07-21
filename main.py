@@ -1,4 +1,5 @@
 from Crawlers.GoCrawler import GoCrawler
+from Crawlers.ChineseChessCrawler import ChineseChessCrawler
 
 # not finish 預訂回傳整個網址
 def parseGoContest(soup):
@@ -15,6 +16,13 @@ def parseGoNews(soup):
   print(topics[1].text)  
   print(topics[2].text)
 
+def run_result():
+  goCrawler = GoCrawler()
+  soup = goCrawler.fetchHTML()
+  result = goCrawler.parseGoProInfo(soup)
+  return result
+
+
 if __name__ == "__main__":
   #resp_GoNews = fetchHTML(main_url['go_news'], encode='big5-hkscs')
   #parseGoNews(resp_GoNews)
@@ -25,7 +33,11 @@ if __name__ == "__main__":
   goCrawler = GoCrawler()
   soup = goCrawler.fetchHTML()
   result = goCrawler.parseGoProInfo(soup)
-  print(result)
+  #print(result)
+
+  chineseChessCrawler = ChineseChessCrawler()
+  soup = goCrawler.fetchHTML()
+  print(soup)
   
   
   
