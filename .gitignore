@@ -2,3 +2,4 @@
 .vscode/
 __pycache__/
 requirement.txt
+test.py

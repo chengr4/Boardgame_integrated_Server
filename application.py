@@ -1,5 +1,5 @@
 from flask import Flask
-from crawler import run_result
+from main import run_result
 
 # print a nice greeting.
 def say_hello(username = "World"):
