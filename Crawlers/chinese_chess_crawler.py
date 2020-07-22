@@ -1,11 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+from .abstract_class.crawler import Crawler
 
-class ChineseChessCrawler():
+class ChineseChessCrawler(Crawler):
   # with encode='utf-8'
   chinese_chess_url_utf8 = {
-    # 海峰棋院
+    # 中華民國象棋文化協會d
     "chinese_chess_news": "http://www.cccs.org.tw/front/bin/home.phtml" # 象棋最新消息
   }
 
@@ -21,23 +22,25 @@ class ChineseChessCrawler():
     return soup
 
   # 分析中華民國象棋文化協會訊息
-  '''def parseGoProInfo(self, soup):
+  def parseChineseChessNews(self):
     # all topics
-    topics = soup.select("div#index-news li")
-    data = {'GoProInfo':[]}
+    soup = self.fetchHTML()
+    topics = soup.select("table.user_3 tr")
+    data = {'ChineseChessNews':[]}
     index = 1
     # 最新棋訊
     for topic in topics:
-      # each row is a dict
+      # set range
+      if index == 3: # catch first 2 index
+        break
+      # each row in tag (<tr>) is a dict
       temp_dic = {}
       temp_dic['id'] = str(index)
-      temp_dic['title'] = '[Go]'+topic.find('span').text.strip()
-      temp_dic['source'] = topic.find('h3', class_='entry-title').find('a').text.strip()
-      temp_dic['href'] = topic.find('h3', class_='entry-title').find('a').get('href')
+      temp_dic['title'] = '[Chinese chess] ' + topic.find('a').text.strip()
+      temp_dic['href'] = 'http://www.cccs.org.tw/front/bin/' + topic.find('a', class_='special-link').get('href')
       # append to data dict (key:GoProInfo, value:array)
-      data['GoProInfo'].append(temp_dic)
+      data['ChineseChessNews'].append(temp_dic)
       index = index + 1
 
-    # convert to json format
-    data_json = json.dumps(data, ensure_ascii=False)
-    return data_json'''
+    # return a dict
+    return data

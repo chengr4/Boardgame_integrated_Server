@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+from .abstract_class.crawler import Crawler
 
-class GoCrawler():
+class GoCrawler(Crawler):
 
   # with encode='utf-8'
   go_url_utf8 = {
@@ -31,13 +32,17 @@ class GoCrawler():
 
 
   # 分析海峰棋院訊息
-  def parseGoProInfo(self, soup):
+  def parseGoProInfo(self):
     # all topics
+    soup = self.fetchHTML()
     topics = soup.select("div#index-news li")
     data = {'GoProInfo':[]}
     index = 1
     # 最新棋訊
     for topic in topics:
+      # set range
+      if index == 3: # catch first 2 index
+        break
       # each row is a dict
       temp_dic = {}
       temp_dic['id'] = str(index)
@@ -48,6 +53,22 @@ class GoCrawler():
       data['GoProInfo'].append(temp_dic)
       index = index + 1
 
-    # convert to json format
-    data_json = json.dumps(data, ensure_ascii=False)
-    return data_json
+    # return a dict
+    return data
+
+  '''
+  # not finish 預訂回傳整個網址
+  def parseGoContest(soup):
+    pass
+    # all topics
+    #topics = soup.select(".base01")
+    #return topics
+
+  # 分析中華圍棋協會
+  def parseGoNews(soup):
+    # all topics
+    topics = soup.select("tr")
+    # the first and the second important messages
+    print(topics[1].text)  
+    print(topics[2].text)
+  '''

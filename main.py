@@ -1,26 +1,31 @@
-from Crawlers.GoCrawler import GoCrawler
-from Crawlers.ChineseChessCrawler import ChineseChessCrawler
+from crawlers.go_crawler import GoCrawler
+from crawlers.chinese_chess_crawler import ChineseChessCrawler
+from crawlers.chess_crawler import ChessCrawler
+import json
 
-# not finish 預訂回傳整個網址
-def parseGoContest(soup):
-  pass
-  # all topics
-  #topics = soup.select(".base01")
-  #return topics
-
-# 分析中華圍棋協會
-def parseGoNews(soup):
-  # all topics
-  topics = soup.select("tr")
-  # the first and the second important messages
-  print(topics[1].text)  
-  print(topics[2].text)
-
+# call by server
 def run_result():
+  # crawl Go
   goCrawler = GoCrawler()
-  soup = goCrawler.fetchHTML()
-  result = goCrawler.parseGoProInfo(soup)
-  return result
+  resultGo = goCrawler.parseGoProInfo()
+
+  # crawl Chinese chess
+  chineseChessCrawler = ChineseChessCrawler()
+  resultCC = chineseChessCrawler.parseChineseChessNews()
+
+  # crawl Chess
+  chessCrawler = ChessCrawler()
+  resultChess = chessCrawler.parseChessNews()
+  
+  data = {}
+  data.update(resultGo)
+  data.update(resultCC)
+  data.update(resultChess)
+
+  # convert to json format
+  data_json = json.dumps(data, ensure_ascii=False)
+
+  return data_json
 
 
 if __name__ == "__main__":
@@ -30,16 +35,25 @@ if __name__ == "__main__":
   #resp_GoContest = fetchHTML(main_url['go_contest'], encode='big5-hkscs')
   # parseGoContest(resp_GoContest) -> 改直接傳整個網址
 
+  # crawl Go
   goCrawler = GoCrawler()
-  soup = goCrawler.fetchHTML()
-  result = goCrawler.parseGoProInfo(soup)
-  #print(result)
+  resultGo = goCrawler.parseGoProInfo()
 
+  # crawl Chinese chess
   chineseChessCrawler = ChineseChessCrawler()
-  soup = goCrawler.fetchHTML()
-  print(soup)
+  resultCC = chineseChessCrawler.parseChineseChessNews()
+
+  # crawl Chess
+  chessCrawler = ChessCrawler()
+  resultChess = chessCrawler.parseChessNews()
   
-  
-  
+  data = {}
+  data.update(resultGo)
+  data.update(resultCC)
+  data.update(resultChess)
+
+  # convert to json format
+  data_json = json.dumps(data, ensure_ascii=False)
+  print(data)
 
         
