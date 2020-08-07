@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from .abstract_class.crawler import Crawler
+import uuid
 
 class GoCrawler(Crawler):
 
@@ -37,21 +38,21 @@ class GoCrawler(Crawler):
     soup = self.fetchHTML()
     topics = soup.select("div#index-news li")
     data = {'GoProInfo':[]}
-    index = 1
+    position = 0
     # 最新棋訊
     for topic in topics:
       # set range
-      if index == 3: # catch first 2 index
+      if position == 3: # catch first 2 index
         break
       # each row is a dict
       temp_dic = {}
-      temp_dic['id'] = str(index)
+      temp_dic['id'] = str(uuid.uuid4())
       temp_dic['title'] = '[Go]'+topic.find('span').text.strip()
       temp_dic['source'] = topic.find('h3', class_='entry-title').find('a').text.strip()
       temp_dic['href'] = topic.find('h3', class_='entry-title').find('a').get('href')
       # append to data dict (key:GoProInfo, value:array)
       data['GoProInfo'].append(temp_dic)
-      index = index + 1
+      position = position + 1
 
     # return a dict
     return data

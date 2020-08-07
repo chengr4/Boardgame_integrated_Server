@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from .abstract_class.crawler import Crawler
+import uuid
 
 class ChineseChessCrawler(Crawler):
   # with encode='utf-8'
@@ -27,20 +28,20 @@ class ChineseChessCrawler(Crawler):
     soup = self.fetchHTML()
     topics = soup.select("table.user_3 tr")
     data = {'ChineseChessNews':[]}
-    index = 1
+    position = 0
     # 最新棋訊
     for topic in topics:
       # set range
-      if index == 3: # catch first 2 index
+      if position == 3: # catch first 2 index
         break
       # each row in tag (<tr>) is a dict
       temp_dic = {}
-      temp_dic['id'] = str(index)
+      temp_dic['id'] = str(uuid.uuid4())
       temp_dic['title'] = '[Chinese chess] ' + topic.find('a').text.strip()
       temp_dic['href'] = 'http://www.cccs.org.tw/front/bin/' + topic.find('a', class_='special-link').get('href')
       # append to data dict (key:GoProInfo, value:array)
       data['ChineseChessNews'].append(temp_dic)
-      index = index + 1
+      position = position + 1
 
     # return a dict
     return data
