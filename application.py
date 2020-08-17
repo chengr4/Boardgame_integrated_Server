@@ -1,32 +1,33 @@
-from flask import Flask
+from flask import Flask, render_template, url_for
+from forms import RegistrationForm, LoginForm
 from main import run_result
 
-# print a nice greeting.
-def say_hello(username = "World"):
-    return '<p>Hello %s!</p>\n' % username
-
-
-# some bits of text for the page.
-header_text = '''
-    <html>\n<head> <title>EB Flask Test</title> </head>\n<body>'''
-instructions = '''
-    <p><em>Hint</em>: This is a RESTful web service! Append a username
-    to the URL (for example: <code>/Thelonious</code>) to say hello to
-    someone specific.</p>\n'''
-home_link = '<p><a href="/">Back</a></p>\n'
-footer_text = '</body>\n</html>'
 
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 
-# add a rule for the index page.
-application.add_url_rule('/', 'index', (lambda: header_text +
-    say_hello() + instructions + footer_text))
+#  for cross site re quest forgery agianst attack
+application.config['SECRET_KEY'] = '4e57a23642728784e88ef62c418e1318'
 
-# add a rule when the page is accessed with a name appended to the site
-# URL.
-application.add_url_rule('/<username>', 'hello', (lambda username:
-    header_text + say_hello(username) + home_link + footer_text))
+posts = [
+    {
+        'author': 'Corey Schafer',
+        'title': 'Blog Post 1',
+        'content': 'First post content',
+        'date_posted': 'April 20, 2018'
+    },
+    {
+        'author': 'Jane Doe',
+        'title': 'Blog Post 2',
+        'content': 'Second post content',
+        'date_posted': 'April 21, 2018'
+    }
+]
+
+@application.route('/')
+def root():
+    return "Yo!!"
+
 
 # call crawler
 @application.route('/e/e')
@@ -34,6 +35,20 @@ def call_crawler():
     print('be called')
     return run_result()
     
+@application.route('/home')
+def home():
+    return render_template('home.html', posts=posts)
+
+# method=['GET', 'POST'] allows get and post in this page
+@application.route('/register', method=['GET', 'POST'])
+def register():
+    form =RegistrationForm()
+    return render_template('register.html', title='Register', form=form)
+
+@application.route('/login')
+def login():
+    form =LoginForm()
+    return render_template('login.html', title='Login', form=form)
 
 
 # run the app.
