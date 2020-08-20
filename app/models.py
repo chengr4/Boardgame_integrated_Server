@@ -6,6 +6,7 @@ Database
 '''
 
 # for reloading the user from the user ID stored in session
+# ????? not sure what is for
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
