@@ -5,6 +5,7 @@ from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from app import application, db, bcrypt
 from flask_login import login_user, current_user, logout_user,login_required
 from .main import run_result
+import json
 
 # call crawler
 @application.route('/e/e')
@@ -131,3 +132,29 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
+@application.route("/post/new-app", methods=['GET', 'POST'])
+def post_new_app():
+
+    if request.method == 'GET':
+        posts = Post.query.all()
+        data = []
+        for post in posts:
+            each_post = {}
+            each_post['id'] = str(post.id)
+            each_post['article_title'] = post.title
+            each_post['content'] = post.content
+            data.append(each_post)
+        # convert to json format
+        data_json = json.dumps(data, ensure_ascii=False)
+        return data_json
+
+    post = Post(title=request.json['title'], content=request.json['content'], user_id=1)
+    db.session.add(post)
+    db.session.commit()
+    
+    
+    return 'post successful'
+
+
+
