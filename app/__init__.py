@@ -13,8 +13,8 @@ application.config['SECRET_KEY'] = '4e57a23642728784e88ef62c418e1318'
 #application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
 # set database uri (online)
-application.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://drvdyfommfmtgt:'+
-'a18dd8832f85b2002fd471d3f032875345fff0eb45e69cfbae88cc47e99f2c60@ec2-3-224-97-209.compute-1.amazonaws.com:5432/dd91muj73h8bjd'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://drvdyfommfmtgt:'\
+  'a18dd8832f85b2002fd471d3f032875345fff0eb45e69cfbae88cc47e99f2c60@ec2-3-224-97-209.compute-1.amazonaws.com:5432/dd91muj73h8bjd'
 
 # to initialize
 db = SQLAlchemy(application)
