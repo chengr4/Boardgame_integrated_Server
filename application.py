@@ -1,6 +1,10 @@
 from app import application
 
+"""
+.. module:: application
+   :synopsis: entry point
 
+"""
 
 
 # run the app.

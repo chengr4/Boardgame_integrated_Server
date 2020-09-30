@@ -4,6 +4,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from app.models import User
 
+'''
 class RegistrationForm(FlaskForm):
   # validators always be an array (I think)
   # Limit definition:
@@ -39,9 +40,10 @@ class LoginForm(FlaskForm):
   # for cookie
   remember = BooleanField('Remember Me')
   submit = SubmitField('Login')
-
+'''
 '''
 Form(input) to update account
+'''
 '''
 class UpdateAccountForm(FlaskForm):
   # validators always be an array (I think)
@@ -67,8 +69,9 @@ class UpdateAccountForm(FlaskForm):
       user = User.query.filter_by(email=email.data).first()
       if user:
          raise ValidationError('choose new email plz')
-
+'''
 class PostForm(FlaskForm):
+  '''The form to post into database'''
   title = StringField('Title', validators=[DataRequired()])
   content = TextAreaField('Content', validators=[DataRequired()])
   submit = SubmitField('Post')

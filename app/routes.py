@@ -1,6 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from app.models import User, Post
-from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+# from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from app.forms import PostForm
 # ! here inport bcrypt not Bcrypt
 from app import application, db, bcrypt
 from flask_login import login_user, current_user, logout_user,login_required
@@ -10,9 +11,11 @@ import json
 # call crawler
 @application.route('/e/e')
 def call_crawler():
+    """Runs web crawler to scrape offical webside"""
+
     print('be called')
     return run_result()
-    
+'''
 @application.route('/')
 @application.route('/home')
 def home():
@@ -132,9 +135,17 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
-
+'''
 @application.route("/post/new-app", methods=['GET', 'POST'])
 def post_new_app():
+    """For posting articles and showing articles.
+
+    if HTTP request == GET:
+        return articles from databse via JSON
+    if HTTP request == POST:
+        save articles with user_id=1
+
+    """
 
     if request.method == 'GET':
         posts = Post.query.all()

@@ -9,4 +9,5 @@ env
 
 .ebignore
 .elasticbeanstalk
+doc
 
