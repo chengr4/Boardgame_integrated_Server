@@ -1,0 +1,8 @@
+Boardgame_integrated_Server
+===========================
+
+.. toctree::
+   :maxdepth: 4
+
+   app
+   application
