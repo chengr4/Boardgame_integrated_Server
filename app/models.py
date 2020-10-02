@@ -34,7 +34,7 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     '''Interface for post table'''
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(10), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     # foreign key
