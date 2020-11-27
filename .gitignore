@@ -8,3 +8,5 @@ requirement.txt
 
 test.py
 test.db
+
+env
