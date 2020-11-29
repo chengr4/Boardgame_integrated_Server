@@ -12,6 +12,7 @@
 ## Bug
 
 + *ModuleNotFoundError: No module named '_sqlite3'*
+好像是路徑問題
 
 ## Reference
 
